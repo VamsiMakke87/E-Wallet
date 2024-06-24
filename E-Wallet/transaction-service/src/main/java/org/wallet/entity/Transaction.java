@@ -4,14 +4,17 @@ package org.wallet.entity;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
+import org.wallet.TransactionStatusEnum;
 
 import java.time.OffsetDateTime;
 
 @Entity
 @Data
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
 public class Transaction {
@@ -33,6 +36,10 @@ public class Transaction {
     private Double amount;
 
     private String comment;
+
+    @Column(nullable = false)
+    @Enumerated(EnumType.STRING)
+    private TransactionStatusEnum status;
 
     @CreationTimestamp
     @Column(nullable = false,updatable = false)

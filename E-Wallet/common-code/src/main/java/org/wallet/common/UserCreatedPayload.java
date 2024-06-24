@@ -16,6 +16,7 @@ public class UserCreatedPayload {
 
     private String email;
 
+    private String requestId;
 
 
 }
