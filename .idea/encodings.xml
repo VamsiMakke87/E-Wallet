@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="Encoding">
+    <file url="file://$PROJECT_DIR$/E-Wallet/common-code/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/E-Wallet/notification-service/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/E-Wallet/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/E-Wallet/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/E-Wallet/transaction-service/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/E-Wallet/user-service/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/E-Wallet/wallet-service/src/main/java" charset="UTF-8" />
+  </component>
+</project>
