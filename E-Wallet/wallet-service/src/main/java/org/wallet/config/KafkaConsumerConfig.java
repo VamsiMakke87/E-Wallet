@@ -52,7 +52,7 @@ public class KafkaConsumerConfig {
 //                .balance(100.0)
 //                .build();
 
-        repo.save(wallet);
+//        repo.save(wallet);
         MDC.clear();
 
     }
