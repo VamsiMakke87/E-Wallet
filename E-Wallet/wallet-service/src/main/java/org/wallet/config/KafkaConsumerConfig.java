@@ -15,6 +15,9 @@ import org.wallet.common.TransactionPayload;
 import org.wallet.common.UserCreatedPayload;
 import org.wallet.entity.Wallet;
 import org.wallet.repo.IWalletRepo;
+import org.wallet.service.WalletService;
+
+import java.util.concurrent.ExecutionException;
 
 @Configuration
 public class KafkaConsumerConfig {
@@ -22,7 +25,12 @@ public class KafkaConsumerConfig {
     private static Logger LOGGER = LoggerFactory.getLogger(KafkaConsumerConfig.class);
 
     @Autowired
-    IWalletRepo repo;
+    IWalletRepo walletRepo;
+
+//    @Autowired
+
+    @Autowired
+    WalletService walletService;
 
     private static ObjectMapper objectMapper=new ObjectMapper();
     @KafkaListener(topics = "USER-CREATED",groupId = "walletApp")
@@ -36,26 +44,26 @@ public class KafkaConsumerConfig {
                 .balance(100.0)
                 .build();
 
-        repo.save(wallet);
+        walletRepo.save(wallet);
         MDC.clear();
 
     }
 
     @KafkaListener(topics = "TXN-INIT",groupId = "walletApp")
-    public void consumeFromTransactionPayload(ConsumerRecord payload) throws JsonProcessingException {
-
+    public void consumeFromTransactionPayload(ConsumerRecord payload) throws JsonProcessingException, ExecutionException, InterruptedException {
+        LOGGER.info("Inside do transaction");
         TransactionPayload transactionPayload=objectMapper.readValue(payload.value().toString(), TransactionPayload.class);
         LOGGER.info("Payload from kafka {}",transactionPayload);
         MDC.put("requestId",transactionPayload.getRequestId());
-//        Wallet wallet=Wallet.builder()
-//                .userId(userCreatedPayload.getUserId())
-//                .balance(100.0)
-//                .build();
 
-//        repo.save(wallet);
+        walletService.walletTransaction(transactionPayload);
+
+
         MDC.clear();
 
     }
+
+
 
 
 

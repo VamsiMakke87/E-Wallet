@@ -49,7 +49,7 @@ public class TransactionService {
                 .build();
 
         Future<SendResult<String, Object>> send = kafkaTemplate.send(TXN_INIT_TOPIC, payload.getFromUserId().toString(), payload);
-
+//        transaction.setStatus(TransactionStatusEnum.SUCCESS);
         return transaction.getTransactionId();
     }
 

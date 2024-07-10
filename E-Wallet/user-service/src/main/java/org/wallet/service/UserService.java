@@ -14,6 +14,7 @@ import org.wallet.entity.User;
 import org.wallet.repo.IUserRepo;
 
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 
 @Service
@@ -29,7 +30,7 @@ public class UserService {
 
     private String USER_CREATED_TOPIC="USER-CREATED";
 
-    public UserDTO save(UserDTO userDTO) {
+    public UserDTO save(UserDTO userDTO) throws ExecutionException, InterruptedException {
         User user=mapToEntity(userDTO);
         user=repo.save(user);
         UserCreatedPayload payload=new UserCreatedPayload();
@@ -38,7 +39,7 @@ public class UserService {
         payload.setUsername(user.getName());
         payload.setRequestId(MDC.get("requestId"));
         Future<SendResult<String, Object>> send = kafkaTemplate.send(USER_CREATED_TOPIC, user.getEmail(), payload);
-        LOGGER.info("Pushed payload in kafka {}",send);
+        LOGGER.info("Pushed payload in kafka {}",send.get());
         return userDTO;
     }
 

@@ -12,6 +12,8 @@ import org.springframework.web.bind.annotation.RestController;
 import org.wallet.dto.UserDTO;
 import org.wallet.service.UserService;
 
+import java.util.concurrent.ExecutionException;
+
 @RestController
 @RequestMapping("/user")
 public class UserController {
@@ -24,7 +26,7 @@ public class UserController {
     KafkaTemplate<String,Object> kafkaTemplate;
 
     @PostMapping("/save")
-    public ResponseEntity<String> create(@RequestBody @Valid UserDTO userDTO){
+    public ResponseEntity<String> create(@RequestBody @Valid UserDTO userDTO) throws ExecutionException, InterruptedException {
 
         userService.save(userDTO);
 
