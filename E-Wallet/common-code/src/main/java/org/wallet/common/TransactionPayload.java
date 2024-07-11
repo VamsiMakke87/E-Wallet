@@ -24,4 +24,9 @@ public class TransactionPayload {
 
     private String requestId;
 
+    private String fromUserMail;
+
+    private String toUserMail;
+
+
 }

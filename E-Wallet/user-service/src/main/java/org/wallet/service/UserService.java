@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.kafka.support.SendResult;
 import org.springframework.stereotype.Service;
+import org.wallet.common.NotificationStatusEnum;
 import org.wallet.common.UserCreatedPayload;
 import org.wallet.dto.UserDTO;
 import org.wallet.entity.User;
@@ -38,6 +39,7 @@ public class UserService {
         payload.setUserId(user.getId());
         payload.setUsername(user.getName());
         payload.setRequestId(MDC.get("requestId"));
+        payload.setNotificationStatus(NotificationStatusEnum.CREATED);
         Future<SendResult<String, Object>> send = kafkaTemplate.send(USER_CREATED_TOPIC, user.getEmail(), payload);
         LOGGER.info("Pushed payload in kafka {}",send.get());
         return userDTO;

@@ -20,4 +20,13 @@ public class TransactionCompletePayload {
 
     private String requestId;
 
+    private Long fromUserId;
+
+    private Long toUserId;
+
+    private Double amount;
+
+
+    private NotificationStatusEnum notificationStatus;
+
 }

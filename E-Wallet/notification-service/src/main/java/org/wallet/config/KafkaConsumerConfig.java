@@ -22,11 +22,32 @@ public class KafkaConsumerConfig {
 
     private static Logger LOGGER= LoggerFactory.getLogger(KafkaConsumerConfig.class);
     @KafkaListener(topics = "USER-CREATED",groupId = "notificationApp")
-    public void consume(ConsumerRecord payload) throws JsonProcessingException {
+    public void consumerForUserCreated(ConsumerRecord payload) throws JsonProcessingException {
 
         UserCreatedPayload userCreatedPayload=objectMapper.readValue(payload.value().toString(),UserCreatedPayload.class);
         notificationService.userCreated(userCreatedPayload);
         LOGGER.info("Email Will be Sent!!");
 
     }
+
+    @KafkaListener(topics = "TXN-SUCCESS",groupId = "notificationApp")
+    public void consumerForTransactionSuccess(ConsumerRecord payload) throws JsonProcessingException {
+
+        UserCreatedPayload userCreatedPayload=objectMapper.readValue(payload.value().toString(),UserCreatedPayload.class);
+        notificationService.userCreated(userCreatedPayload);
+        LOGGER.info("Email Will be Sent!!");
+
+    }
+
+    @KafkaListener(topics = "TXN-FAILED",groupId = "notificationApp")
+    public void consumerForUserTransactionFailed(ConsumerRecord payload) throws JsonProcessingException {
+
+        UserCreatedPayload userCreatedPayload=objectMapper.readValue(payload.value().toString(),UserCreatedPayload.class);
+        notificationService.userCreated(userCreatedPayload);
+        LOGGER.info("Email Will be Sent!!");
+
+    }
+
+
+
 }
