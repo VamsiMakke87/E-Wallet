@@ -27,6 +27,7 @@ public class TransactionCompletePayload {
     private Double amount;
 
 
+
     private NotificationStatusEnum notificationStatus;
 
 }

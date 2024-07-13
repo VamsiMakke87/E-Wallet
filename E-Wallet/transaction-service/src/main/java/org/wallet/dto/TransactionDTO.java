@@ -1,6 +1,7 @@
 package org.wallet.dto;
 
 
+import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -25,6 +26,7 @@ public class TransactionDTO {
     private Long toUserId;
 
     @NotNull
+    @Min(1)
     private Double amount;
 
     private String comment;

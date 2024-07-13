@@ -33,7 +33,7 @@ public class KafkaConsumerConfig {
         Transaction transaction = transactionRepo.findById(transactionCompletePayload.getId()).get();
 
         transaction.setStatus(transactionCompletePayload.isSuccess()? TransactionStatusEnum.SUCCESS:TransactionStatusEnum.FAILED);
-
+        transaction.setReason(transactionCompletePayload.getReason());
         transactionRepo.save(transaction);
 
         LOGGER.info("Transaction Completed");

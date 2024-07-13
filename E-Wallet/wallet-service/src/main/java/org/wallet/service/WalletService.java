@@ -56,6 +56,7 @@ public class WalletService {
             fromWallet.setBalance(fromWallet.getBalance()- transactionPayload.getAmount());
             toWallet.setBalance(toWallet.getBalance()+transactionPayload.getAmount());
             transactionCompletePayload.setSuccess(true);
+            transactionCompletePayload.setReason("Transaction Successful");
             transactionCompletePayload.setNotificationStatus(NotificationStatusEnum.SUCCESS);
         }
         Future<SendResult<String, Object>> send = kafkaTemplate.send(transactionCompleteTopic, transactionCompletePayload.getId().toString(), transactionCompletePayload);
