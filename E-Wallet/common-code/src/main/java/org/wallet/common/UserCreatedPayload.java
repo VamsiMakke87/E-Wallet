@@ -18,8 +18,6 @@ public class UserCreatedPayload {
 
     private String requestId;
 
-    private NotificationStatusEnum notificationStatus;
-
 
 
 }

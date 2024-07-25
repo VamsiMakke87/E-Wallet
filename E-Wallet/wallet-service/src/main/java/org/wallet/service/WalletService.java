@@ -8,7 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.kafka.support.SendResult;
 import org.springframework.stereotype.Service;
-import org.wallet.common.NotificationStatusEnum;
 import org.wallet.common.TransactionCompletePayload;
 import org.wallet.common.TransactionPayload;
 import org.wallet.entity.Wallet;
