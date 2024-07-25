@@ -1,18 +1,22 @@
 package org.wallet.common;
 
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
+@ToString
 public class TransactionCompletePayload {
 
     private Long id;
+
+    private String fromUserEmail;
+
+    private String toUserEmail;
+
+    private String txnId;
 
     private boolean isSuccess;
 
@@ -26,8 +30,8 @@ public class TransactionCompletePayload {
 
     private Double amount;
 
+    private Double fromUserBalance;
 
-
-    private NotificationStatusEnum notificationStatus;
+    private Double toUserBalance;
 
 }

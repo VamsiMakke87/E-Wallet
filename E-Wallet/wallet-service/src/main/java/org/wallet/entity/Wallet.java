@@ -21,6 +21,9 @@ public class Wallet {
     @Column(nullable = false,unique = true)
     private Long userId;
 
+    @Column(nullable = false,unique = true)
+    private String email;
+
     private Double balance;
 
     @CreationTimestamp

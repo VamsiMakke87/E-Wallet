@@ -41,6 +41,7 @@ public class KafkaConsumerConfig {
         MDC.put("requestId",userCreatedPayload.getRequestId());
         Wallet wallet=Wallet.builder()
                 .userId(userCreatedPayload.getUserId())
+                .email(userCreatedPayload.getEmail())
                 .balance(100.0)
                 .build();
 

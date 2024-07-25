@@ -9,6 +9,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.kafka.annotation.KafkaListener;
+import org.wallet.common.TransactionCompletePayload;
 import org.wallet.common.UserCreatedPayload;
 import org.wallet.service.NotificationService;
 
@@ -33,8 +34,8 @@ public class KafkaConsumerConfig {
     @KafkaListener(topics = "TXN-SUCCESS",groupId = "notificationApp")
     public void consumerForTransactionSuccess(ConsumerRecord payload) throws JsonProcessingException {
 
-        UserCreatedPayload userCreatedPayload=objectMapper.readValue(payload.value().toString(),UserCreatedPayload.class);
-        notificationService.userCreated(userCreatedPayload);
+        TransactionCompletePayload transactionCompletePayload=objectMapper.readValue(payload.value().toString(), TransactionCompletePayload.class);
+        notificationService.transactionSuccess(transactionCompletePayload);
         LOGGER.info("Email Will be Sent!!");
 
     }
@@ -42,8 +43,8 @@ public class KafkaConsumerConfig {
     @KafkaListener(topics = "TXN-FAILED",groupId = "notificationApp")
     public void consumerForUserTransactionFailed(ConsumerRecord payload) throws JsonProcessingException {
 
-        UserCreatedPayload userCreatedPayload=objectMapper.readValue(payload.value().toString(),UserCreatedPayload.class);
-        notificationService.userCreated(userCreatedPayload);
+        TransactionCompletePayload transactionCompletePayload=objectMapper.readValue(payload.value().toString(), TransactionCompletePayload.class);
+        notificationService.transactionFailed(transactionCompletePayload);
         LOGGER.info("Email Will be Sent!!");
 
     }

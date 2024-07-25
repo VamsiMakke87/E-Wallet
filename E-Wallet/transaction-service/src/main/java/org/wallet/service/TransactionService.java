@@ -23,7 +23,7 @@ import java.util.concurrent.Future;
 public class TransactionService {
 
     @Autowired
-    private ITransactionRepo repo;
+    private ITransactionRepo transactionRepo;
 
     @Autowired
     KafkaTemplate<String, Object> kafkaTemplate;
@@ -37,10 +37,11 @@ public class TransactionService {
         transaction.setStatus(TransactionStatusEnum.INPROGRESS);
         transaction.setTransactionId(UUID.randomUUID().toString());
 
-        repo.save(transaction);
+        transactionRepo.save(transaction);
 
         TransactionPayload payload=TransactionPayload.builder()
                 .id(transaction.getId())
+                .txnId(transaction.getTransactionId())
                 .fromUserId(transaction.getFromUserId())
                 .toUserId(transaction.getToUserId())
                 .amount(transaction.getAmount())
@@ -72,6 +73,14 @@ public class TransactionService {
                 .amount(transaction.getAmount())
                 .comment(transaction.getComment())
                 .build();
+    }
+    
+    public Transaction getStatus(String txnId){
+        
+        return transactionRepo.findByTransactionId(txnId);
+        
+//        return mapToDTO(transaction);
+        
     }
 
 }

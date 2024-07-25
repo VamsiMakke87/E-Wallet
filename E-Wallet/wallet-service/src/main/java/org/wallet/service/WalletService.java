@@ -27,6 +27,9 @@ public class WalletService {
     @Autowired
     KafkaTemplate<String,Object> kafkaTemplate;
 
+    private static String transactionSuccessTopic="TXN-SUCCESS";
+    private static String transactionFailedTopic="TXN-FAILED";
+
     private static String transactionCompleteTopic="TXN-COMPLETED";
 
     private static Logger LOGGER = LoggerFactory.getLogger(WalletService.class);
@@ -37,8 +40,10 @@ public class WalletService {
         Wallet fromWallet= walletRepo.findByUserId(transactionPayload.getFromUserId());
         TransactionCompletePayload transactionCompletePayload=TransactionCompletePayload.builder()
                 .id(transactionPayload.getId())
+                .txnId(transactionPayload.getTxnId())
                 .requestId(transactionPayload.getRequestId())
                 .fromUserId(transactionPayload.getFromUserId())
+                .fromUserEmail(fromWallet.getEmail())
                 .toUserId(transactionPayload.getToUserId())
                 .amount(transactionPayload.getAmount())
                 .build();
@@ -49,18 +54,27 @@ public class WalletService {
 
             transactionCompletePayload.setSuccess(false);
             transactionCompletePayload.setReason("Insufficient Balance");
-            transactionCompletePayload.setNotificationStatus(NotificationStatusEnum.FAILED);
+//            transactionCompletePayload.getFromUserEmail(fr);
+            Future<SendResult<String, Object>> send = kafkaTemplate.send(transactionFailedTopic, transactionCompletePayload.getId().toString(), transactionCompletePayload);
+            LOGGER.info("Pushed to Transaction Failed topic {}",send.get());
 
         }else{
             Wallet toWallet= walletRepo.findByUserId(transactionPayload.getToUserId());
             fromWallet.setBalance(fromWallet.getBalance()- transactionPayload.getAmount());
             toWallet.setBalance(toWallet.getBalance()+transactionPayload.getAmount());
             transactionCompletePayload.setSuccess(true);
+            transactionCompletePayload.setToUserEmail(toWallet.getEmail());
+            transactionCompletePayload.setFromUserBalance(fromWallet.getBalance());
+            transactionCompletePayload.setToUserBalance(toWallet.getBalance());
             transactionCompletePayload.setReason("Transaction Successful");
-            transactionCompletePayload.setNotificationStatus(NotificationStatusEnum.SUCCESS);
+            Future<SendResult<String, Object>> send = kafkaTemplate.send(transactionSuccessTopic, transactionCompletePayload.getId().toString(), transactionCompletePayload);
+            LOGGER.info("Pushed to Transaction Success topic {}",send.get());
+
         }
+
         Future<SendResult<String, Object>> send = kafkaTemplate.send(transactionCompleteTopic, transactionCompletePayload.getId().toString(), transactionCompletePayload);
         LOGGER.info("Pushed to Transaction Completed topic {}",send.get());
+
 
     }
 

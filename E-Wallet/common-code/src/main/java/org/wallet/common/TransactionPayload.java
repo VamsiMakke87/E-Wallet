@@ -14,6 +14,8 @@ public class TransactionPayload {
 
     private Long id;
 
+    private String txnId;
+
     private Long fromUserId;
 
     private Long toUserId;
